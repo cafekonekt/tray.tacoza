@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self';
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src 'self' https://fonts.gstatic.com;
+                 img-src 'self' data:;
+                 connect-src 'none';
+                 object-src 'none';
+                 base-uri 'none'">
+  <title>Tacoza Tray</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== CUSTOM TITLE BAR ===== -->
+  <div class="titlebar">
+    <div class="titlebar-sidebar"></div>
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-controls">
+      <button class="titlebar-btn" id="btn-minimize" title="Minimize">
+        <svg width="10" height="1" viewBox="0 0 10 1"><rect width="10" height="1" fill="currentColor"/></svg>
+      </button>
+      <button class="titlebar-btn titlebar-close" id="btn-close" title="Close">
+        <svg width="10" height="10" viewBox="0 0 10 10"><line x1="1" y1="1" x2="9" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="1" x2="1" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <nav class="sidebar">
+
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="Tacoza">
+      <div class="sidebar-logo-text">
+        <h1>Tacoza Tray</h1>
+        <span id="app-version">v1.0.0</span>
+      </div>
+    </div>
+
+    <span class="nav-section-label">Manage</span>
+
+    <div class="nav-item active" data-section="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Overview
+    </div>
+
+    <div class="nav-item" data-section="printers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      ESC/POS Printers
+    </div>
+
+    <span class="nav-section-label" style="margin-top:8px">Settings</span>
+
+    <div class="nav-item" data-section="auth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Authentication
+    </div>
+
+    <div class="nav-item" data-section="general">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      General
+    </div>
+
+    <div class="sidebar-status">
+      <span class="status-dot" id="server-dot"></span>
+      <span id="server-label">Connecting…</span>
+    </div>
+
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section class="section active" id="section-overview">
+      <div style="margin-bottom:24px">
+        <h2>Overview</h2>
+        <p class="page-subtitle">Live status of the Tacoza Tray service and connected clients.</p>
+      </div>
+
+      <div class="stat-grid" style="margin-bottom:20px">
+        <div class="stat">
+          <div class="stat-value" id="stat-port">—</div>
+          <div class="stat-label">WebSocket Port</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-clients">—</div>
+          <div class="stat-label">Connected Clients</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-printers">—</div>
+          <div class="stat-label">ESC/POS Printers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-status" style="color:var(--success);font-size:18px">● Running</div>
+          <div class="stat-label">Service Status</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Connected Clients</h3>
+        <div id="clients-list">
+          <span style="color:var(--muted);font-size:13px">No clients connected</span>
+        </div>
+      </div>
+
+      <div style="margin-top:4px">
+        <button class="btn btn-ghost" id="btn-refresh-overview">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </section>
+
+    <!-- PRINTERS -->
+    <section class="section" id="section-printers">
+      <div style="margin-bottom:24px">
+        <h2>ESC/POS Printers</h2>
+        <p class="page-subtitle">Manage thermal printers connected via network TCP or OS drivers.</p>
+      </div>
+
+      <div id="printer-list" style="margin-bottom:12px"></div>
+
+      <button class="btn btn-ghost" id="btn-add-toggle">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Add Printer
+      </button>
+
+      <div class="card add-form" id="add-printer-form" style="margin-top:12px">
+        <div class="card-title">New Printer</div>
+        <div class="divider"></div>
+
+        <div style="margin-bottom:12px">
+          <label>Label</label>
+          <input type="text" id="new-label" placeholder="e.g. Kitchen Printer">
+        </div>
+
+        <div style="margin-bottom:12px">
+          <label>Connection Type</label>
+          <select id="new-type">
+            <option value="network">Network  (TCP — recommended)</option>
+            <option value="windows">Windows Printer</option>
+            <option value="cups">CUPS  (macOS / Linux)</option>
+          </select>
+        </div>
+
+        <div id="field-network">
+          <div class="row" style="margin-bottom:12px">
+            <div>
+              <label>IP Address / Hostname</label>
+              <input type="text" id="new-host" placeholder="192.168.1.100">
+            </div>
+            <div style="max-width:120px">
+              <label>Port</label>
+              <input type="number" id="new-port" value="9100" min="1" max="65535">
+            </div>
+          </div>
+        </div>
+
+        <div id="field-named" style="display:none">
+          <div style="margin-bottom:12px">
+            <label>Printer Name</label>
+            <div class="row">
+              <input type="text" id="new-name" placeholder="EPSON TM-T88V">
+              <button class="btn btn-ghost" id="btn-pick-system-printer" style="flex:0">Browse…</button>
+            </div>
+          </div>
+          <div id="system-printers-list" style="display:none;margin-bottom:10px"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="btn btn-primary" id="btn-do-add-printer">Add Printer</button>
+          <button class="btn btn-ghost" id="btn-cancel-add">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTH -->
+    <section class="section" id="section-auth">
+      <div style="margin-bottom:24px">
+        <h2>Authentication</h2>
+        <p class="page-subtitle">Every seller.tacoza tab must present this token to connect.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">Auth Token</div>
+        <p class="card-desc">
+          Keep this secret — regenerating it disconnects all active clients immediately.
+        </p>
+        <div class="token-box" id="token-display">—</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="btn-copy-token">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy Token
+          </button>
+          <button class="btn btn-ghost" id="btn-regenerate-token">Regenerate</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GENERAL -->
+    <section class="section" id="section-general">
+      <div style="margin-bottom:24px">
+        <h2>General</h2>
+        <p class="page-subtitle">Configure port and startup behavior.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">WebSocket Port</div>
+        <p class="card-desc">Default is 7777. Changes take effect after restarting Tacoza Tray.</p>
+        <div class="row" style="max-width:280px">
+          <input type="number" id="port-input" min="1024" max="65535">
+          <button class="btn btn-primary" id="btn-save-port" style="flex:0">Save</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Auto-launch</div>
+        <p class="card-desc">Tacoza Tray launches automatically when you log into your computer.</p>
+        <span class="badge badge-green" id="autostatus">Enabled</span>
+      </div>
+    </section>
+
+  </main>
+
+  </div><!-- /.layout -->
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

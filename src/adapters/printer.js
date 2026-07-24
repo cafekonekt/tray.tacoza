@@ -72,7 +72,7 @@ async function printHtml(printerName, htmlBase64, copies = 1, paperWidthMm = 80)
   if (!Number.isFinite(widthMm) || widthMm < 20 || widthMm > 500) throw new Error('paperWidthMm must be 20–500')
   paperWidthMm = widthMm
 
-  const SIDE_MARGIN_MM = 2  // physical non-printable margin on each edge
+  const SIDE_MARGIN_MM = 4  // physical non-printable margin on each edge (thermal print heads on e.g. 80mm paper are commonly only 72mm printable)
 
   // Decode base64 → UTF-8 HTML fragment
   const fragment = Buffer.from(htmlBase64, 'base64').toString('utf8')

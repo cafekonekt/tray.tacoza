@@ -1,6 +1,6 @@
 {
   "name": "tacoza-tray",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cross-platform local hardware bridge for bill printing in restaurants",
   "main": "main.js",
   "author": {
